@@ -5,7 +5,7 @@ import gym
 import numpy as np
 from gym import wrappers
 env = gym.make('InvertedPendulum-v1')
-env = wrappers.Monitor(env, '/home/sid/ccp_pg', force= True)
+env = wrappers.Monitor(env, './ccp_pg', force= True)
 
 
 def simulate(policy, steps, graphics = False):
@@ -14,7 +14,6 @@ def simulate(policy, steps, graphics = False):
     for i in xrange(steps):
         if graphics: env.render()
         a = policy(observation)
-
         observation, reward, done, info = env.step(a)
         R += reward
         if done:
@@ -105,7 +104,8 @@ def pg():
 w = pg()
 print 'Done'
 r = 0
+num_sessions = 100
 for i in xrange(100):
-    r += simulate(lambda s: (w.dot(s)), 1000)
+    r += simulate(lambda s: (w.dot(s)), 2000)
 
-print 'average_return over 100 trials:', r/100.0
+print 'average_return over 100 trials:', r/num_sessions
